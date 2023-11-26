@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1712e44458ae9f64cb8f52a06701ae19, type: 3}
+  m_Name: Assault Rifle
+  m_EditorClassIdentifier: 
+  maxAmmo: 24
+  baseDamage: 40
+  bulletSpeed: 50
+  bulletLifeTime: 3
+  reloadTime: 2.5
+  fireRate: 0.4
+  bulletPrefab: {fileID: 4888165820347339481, guid: 808c90fd480d10f45b8ebd41f73975e2, type: 3}
