@@ -90,7 +90,7 @@ namespace ZGP.Game
         }
 
         public void Reload(){
-            if(IsReloading || GM.IsGameOver) return;
+            if(IsReloading || GM.IsGameOver || weaponClass.currentAmmo >= weaponClass.maxAmmo) return;
 
             StartCoroutine(ReloadCoroutine());
         }
