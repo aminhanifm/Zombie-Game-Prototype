@@ -27,6 +27,16 @@ namespace ZGP.Game
             zombieClass.AttackRange = attackRangeRandom[attackIndexRandom] + attackRangeOffset;
 
             ZombieMat = models[randomIndexModel].GetComponent<Renderer>().material;
+        
+            switch (GM.CurrentPhase)
+            {
+                case 2:
+                    zombieClass.CurrentHealth += 50;
+                break;
+                case 4:
+                    zombieClass.CurrentHealth += 100;
+                break;
+            }
         }
 
         public void ApplyPush(Vector3 pushDirection, float pushDistance, float pushDuration){

@@ -76,6 +76,9 @@ namespace ZGP.Game
                 }
             }
 
+            GM.zombies.Remove(this);
+            GM.CheckPhase();
+
             Destroy(gameObject);
         }
 

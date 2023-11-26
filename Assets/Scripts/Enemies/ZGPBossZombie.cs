@@ -42,6 +42,8 @@ namespace ZGP.Game
                 break;
                 default:
                     isDied = true;
+                    GM.zombies.Remove(this);
+                    GM.CheckPhase();
                     Instantiate(killedParticle, transform.position + Vector3.up, Quaternion.identity);
                     Destroy(gameObject);
                 break;

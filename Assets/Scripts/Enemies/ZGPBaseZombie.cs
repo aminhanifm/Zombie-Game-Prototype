@@ -100,6 +100,8 @@ namespace ZGP.Game
 
         protected virtual void Die(){
             Instantiate(killedParticle, transform.position + Vector3.up, Quaternion.identity);
+            GM.zombies.Remove(this);
+            GM.CheckPhase();
             Destroy(gameObject);
         }
 
@@ -121,11 +123,6 @@ namespace ZGP.Game
             ZombieMat.SetColor("_Color", Color.red);
             yield return new WaitForSeconds(0.1f);
             ZombieMat.SetColor("_Color", Color.white);
-        }
-
-        protected virtual void OnDestroy()
-        {
-            
         }
 
         void OnDrawGizmosSelected()
