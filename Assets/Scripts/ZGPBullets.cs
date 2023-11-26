@@ -11,12 +11,12 @@ namespace ZGP.Game
         void OnCollisionEnter(Collision hit)
         {
             if(hit.transform.CompareTag("ZombieHead")){
-
+                hit.transform.GetComponentInParent<ZGPBaseZombie>().TakeDamage(BaseDamage * 2);
             } else if (hit.transform.CompareTag("ZombieBody")){
+                hit.transform.GetComponentInParent<ZGPBaseZombie>().TakeDamage(BaseDamage);
+            } 
 
-            } else {
-                Destroy(gameObject);
-            }
+            Destroy(gameObject);
         }
     }
 }

@@ -1,28 +1,32 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 namespace ZGP.Game
 {
-    public class ZGPCharacterStatus : MonoBehaviour
+    public class ZGPCharacterStatus : MonoBehaviour, IPushable, IDamageable
     {
         private ZGPGameManager GM => ZGPGameManager.Instance;
         [Header("Text References")]
         public TMP_Text liveText;
         public TMP_Text ammoText;
         [Space(20)]
+        public CanvasGroup hurtEffect;
         public WeaponSO weapon;
         public WeaponClass weaponClass;
         public Transform bulletHole;
+        public RigBuilder rigBuilder;
         public float health = 5;
         private float maxHealth = 5;
         public bool IsReloading {get; set;}
         public bool IsShooting {get; set;}
-
+        
         private Animator animator;
         private float curFireRate;
         private int animIDShoot;
         private int animIDReload;
+        private int animIDDead;
 
         void Awake()
         {
@@ -67,6 +71,7 @@ namespace ZGP.Game
         {
             animIDShoot = Animator.StringToHash("Shoot_b");
             animIDReload = Animator.StringToHash("Reload_b");
+            animIDDead = Animator.StringToHash("Death_b");
         }
 
         public void UpdateTextStatus(){
@@ -106,13 +111,42 @@ namespace ZGP.Game
         }
 
         public void TakeDamage(float damage){
-            if(health <= 0) return;
+            if(health <= 0 || GM.IsGameOver) return;
 
+            StartCoroutine(HurtEffect());
+            ZGPDamageIndicator.Instance.ShowDamage(transform.position + (Vector3.up * 4), (int)damage);
             health -= damage;
 
             if(health <= 0){
                 health = 0;
-                GM.GameOver();
+                rigBuilder.layers[0].active = false;
+                animator.SetBool(animIDDead, true);
+                GM.GameOver(false);
+            }
+        }
+
+        private IEnumerator HurtEffect(){
+            hurtEffect.alpha = 1;
+
+            yield return new WaitForSeconds(0.15f);
+
+            hurtEffect.alpha = 0;
+        }
+
+        public void ApplyPush(Vector3 pushDirection, float pushDistance, float pushDuration){
+            StartCoroutine(PushTransform(pushDirection, pushDistance, pushDuration));
+        }
+
+        public IEnumerator PushTransform(Vector3 pushDirection, float pushDistance, float pushDuration){
+            float elapsedTime = 0.0f;
+            Vector3 pushVelocity = pushDirection * pushDistance;
+            while (elapsedTime < pushDuration)
+            {
+                float t = elapsedTime / pushDuration;
+                float forceMultiplier = 1 - t * t * t; // Cubic easing out function
+                transform.Translate(pushVelocity * Time.deltaTime * forceMultiplier, Space.World);
+                elapsedTime += Time.deltaTime;
+                yield return null;
             }
         }
     }
