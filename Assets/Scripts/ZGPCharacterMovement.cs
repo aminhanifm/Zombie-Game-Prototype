@@ -113,7 +113,7 @@ namespace ZGP.Game{
         float aim;
         float _rotationVelocity;
         private float TopClamp = 4f;
-		private float BottomClamp = 0.5f;
+		private float BottomClamp = 2f;
 
         private void CameraRotation(){
             if (characterInput.CamLook.sqrMagnitude >= threshold)
